@@ -4,11 +4,11 @@ import requests, json, urllib, datetime
 
 dryrun = True
 debug = True
-maxiter = 100
+maxiter = 10
 url = 'http://localhost:8080/alfresco/api/-default-/public/cmis/versions/1.1/browser'
 username = "admin"
-password = 'DiN8quahkaequahc'
-maxitems = "3"
+password = 'secret'
+maxitems = "10"
 startdate = "2022-01-29T10:00+0300"
 enddate = "2022-01-29T22:10+0300"
 headers = {'Accept': 'application/json'}
@@ -19,7 +19,7 @@ for _ in range(maxiter):
                 "maxItems": maxitems,
                 "statement": "select * from cmis:document where cmis:lastModificationDate > '" + \
                         startdate + "' and cmis:lastModificationDate < '" + enddate + "' " + \
-                        "and cmis:name not like 'page.%' and cmis:name not like 'dashboard.%' " + \
+                        "and cmis:contentStreamMimeType <> 'text/xml' " + \
                         "and cmis:lastModifiedBy <> '" + username + "' and cmis:lastModifiedBy <> 'System'" }
 
         data = urllib.urlencode(f)
