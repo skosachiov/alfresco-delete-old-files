@@ -4,13 +4,14 @@ import requests, json, urllib, datetime
 
 dryrun = True
 debug = True
-maxiter = 10
+maxiter = 100
 url = 'http://localhost:8080/alfresco/api/-default-/public/cmis/versions/1.1/browser'
 username = "admin"
 password = 'secret'
-maxitems = "10"
-startdate = "2022-01-29T10:00+0300"
-enddate = "2022-01-29T22:10+0300"
+maxitems = "100"
+startdate = "2015-01-29T10:00"
+lagindays = 365
+enddate = (datetime.datetime.today() - datetime.timedelta(days=lagindays)).replace(microsecond=0).isoformat()
 headers = {'Accept': 'application/json'}
 
 for _ in range(maxiter):
@@ -46,5 +47,4 @@ for _ in range(maxiter):
                 procitems += 1
 
         if procitems < int(maxitems): break
-
 
