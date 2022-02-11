@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
-import requests, json, urllib, datetime
+# Python 2/3
+
+import requests, json, urllib, datetime, sys
 
 dryrun = True
 debug = True
@@ -23,7 +25,9 @@ for _ in range(maxiter):
                         "and cmis:contentStreamMimeType <> 'text/xml' " + \
                         "and cmis:lastModifiedBy <> '" + username + "' and cmis:lastModifiedBy <> 'System'" }
 
-        data = urllib.urlencode(f)
+        if sys.version_info[0] < 3: data = urllib.urlencode(f)
+        else: data = urllib.parse.urlencode(f)
+                
         if debug: print(data)
 
         r = requests.post(url, headers=headers, auth=(username, password), data=data)
@@ -42,7 +46,8 @@ for _ in range(maxiter):
                         print("")
                 f = {   "cmisaction": "delete",
                         "objectId": x["properties"]["cmis:objectId"]["value"] }
-                data = urllib.urlencode(f)
+                if sys.version_info[0] < 3: data = urllib.urlencode(f)
+                else: data = urllib.parse.urlencode(f)
                 if not dryrun: requests.post(url + "/root", headers=headers, auth=(username, password), data=data)
                 procitems += 1
 
